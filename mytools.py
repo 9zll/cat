@@ -116,3 +116,21 @@ def 读取CSV数据(文件所在位置及名称):
      """ 读取CSV文件,保留标签内容和有序变量顺序 """   
      result, metadata = pyreadstat.read_CSV(文件所在位置及名称, apply_value_formats=True, formats_as_ordered_category=True)    
      return result, metadata
+
+
+def 计算单变量均值置信区间(df_movies):
+ # 计算均值和标准误差
+  import pandas as pd  
+  from scipy import stats  
+  mean = df_movies['average'].mean()
+  std_error = stats.sem(df_movies['average'])
+  # 设定置信水平
+  confidence_level = 0.95
+  # 设定自由度
+  df = len(df_movies['average']) - 1
+  # 计算置信区间
+  confidence_interval = stats.t.interval(confidence_level, df, loc=mean, scale=std_error)
+  # 输出结果
+  print(F"均值：{mean: .2f}")
+  print(F"均值在置信水平{confidence_level}下的置信区间为：", confidence_interval)
+  return mean ,confidence_level, confidence_interval
